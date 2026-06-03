@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IndesIAHack 2025 · Hackathon de IA Industrial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --tinta:        #0E1623;
+      --tinta2:       #3D4759;
+      --suave:        #6B7587;
+      --fondo-soft:   #F4F5F7;
+      --blanco:       #FFFFFF;
+      --g0: #0029E6; --g1: #4D11D9; --g2: #8E14C7; --g3: #DA1FA8;
+      --gradient: linear-gradient(135deg, var(--g0) 0%, var(--g1) 35%, var(--g2) 65%, var(--g3) 100%);
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(14,22,35,.10);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter Tight', system-ui, sans-serif;
+      background: var(--tinta);
+      color: var(--blanco);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+    input, select, textarea, button {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    /* ─── UTILITIES ──────────────────────────────────────────── */
+    .gradient-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-bg { background: var(--gradient); }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 96px 0; }
+    .section-label {
+      font-size: 12px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--suave); margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 600;
+      letter-spacing: -.025em; line-height: 1.05; color: var(--blanco);
+      margin-bottom: 24px;
+    }
+    .section-lead {
+      font-size: 17px; font-weight: 400; color: rgba(255,255,255,.65);
+      line-height: 1.6; max-width: 620px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 8px; font-weight: 600;
+      font-size: 15px; cursor: pointer; border: none; transition: opacity .15s, transform .15s;
+    }
+    .btn:hover { opacity: .88; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary { background: var(--gradient); color: var(--blanco); }
+    .btn-outline {
+      background: transparent; color: var(--blanco);
+      border: 1.5px solid rgba(255,255,255,.25);
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,.6); }
+    .btn-ghost { background: rgba(255,255,255,.08); color: var(--blanco); }
+    .tag {
+      display: inline-block; padding: 4px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 600; letter-spacing: .04em;
+      background: rgba(255,255,255,.1); color: rgba(255,255,255,.8);
+    }
+    .card {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius); padding: 32px; transition: border-color .2s, background .2s;
+    }
+    .card:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.15); }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 0 24px;
+      background: rgba(14,22,35,.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .nav-inner {
+      max-width: 1120px; margin: 0 auto;
+      display: flex; align-items: center; gap: 32px; height: 64px;
+    }
+    .nav-logo {
+      font-size: 18px; font-weight: 700; letter-spacing: -.03em;
+      flex-shrink: 0;
+    }
+    .nav-logo span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-links {
+      display: flex; gap: 24px; flex: 1;
+    }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: rgba(255,255,255,.65);
+      transition: color .15s;
+    }
+    .nav-links a:hover { color: var(--blanco); }
+    .nav-actions { display: flex; gap: 10px; margin-left: auto; }
+    .nav-user {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; font-weight: 500; cursor: pointer;
+    }
+    .nav-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--gradient); display: flex; align-items: center;
+      justify-content: center; font-size: 13px; font-weight: 700;
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; padding-top: 64px; overflow: hidden;
+      position: relative;
+    }
+    .hero-glow {
+      position: absolute; top: -120px; right: -200px;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(141,20,199,.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-glow2 {
+      position: absolute; bottom: -100px; left: -150px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,41,230,.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1120px; margin: 0 auto; padding: 0 24px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 20px; margin-bottom: 32px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      font-size: 13px; font-weight: 500; color: rgba(255,255,255,.8);
+    }
+    .hero-badge-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--gradient);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .6; transform: scale(.85); }
+    }
+    .hero-title {
+      font-size: clamp(40px, 7vw, 80px); font-weight: 700;
+      letter-spacing: -.04em; line-height: .95; color: var(--blanco);
+      margin-bottom: 24px;
+    }
+    .hero-title em { font-style: normal; }
+    .hero-lead {
+      font-size: clamp(16px, 2vw, 20px); font-weight: 400;
+      color: rgba(255,255,255,.6); line-height: 1.55; max-width: 580px;
+      margin-bottom: 40px;
+    }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 64px; }
+    .hero-stats {
+      display: flex; gap: 48px; flex-wrap: wrap;
+      padding-top: 40px; border-top: 1px solid rgba(255,255,255,.1);
+    }
+    .stat-value {
+      font-size: 36px; font-weight: 700; letter-spacing: -.03em;
+    }
+    .stat-label {
+      font-size: 13px; color: rgba(255,255,255,.5); margin-top: 2px;
+    }
+
+    /* ─── SEPARATOR ──────────────────────────────────────────── */
+    .separator {
+      height: 2px; background: var(--gradient);
+      opacity: .35; margin: 0;
+    }
+
+    /* ─── RETOS ──────────────────────────────────────────────── */
+    .retos-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px; margin-top: 48px;
+    }
+    .reto-num {
+      font-size: 48px; font-weight: 700; letter-spacing: -.04em;
+      line-height: 1; margin-bottom: 16px;
+    }
+    .reto-title {
+      font-size: 20px; font-weight: 600; margin-bottom: 10px; color: var(--blanco);
+    }
+    .reto-desc {
+      font-size: 14px; color: rgba(255,255,255,.55); line-height: 1.6;
+    }
+    .reto-sponsor {
+      margin-top: 20px; font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,.4); letter-spacing: .06em; text-transform: uppercase;
+    }
+
+    /* ─── AGENDA ─────────────────────────────────────────────── */
+    .agenda-days {
+      display: flex; gap: 12px; margin: 32px 0 40px;
+    }
+    .day-tab {
+      padding: 8px 20px; border-radius: 8px; font-size: 14px;
+      font-weight: 600; cursor: pointer; border: 1.5px solid rgba(255,255,255,.15);
+      color: rgba(255,255,255,.5); background: transparent; transition: all .15s;
+    }
+    .day-tab.active {
+      background: var(--gradient); border-color: transparent; color: var(--blanco);
+    }
+    .agenda-list { display: flex; flex-direction: column; gap: 2px; }
+    .agenda-item {
+      display: grid; grid-template-columns: 100px 1fr auto;
+      gap: 24px; align-items: start;
+      padding: 20px 24px; border-radius: 10px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      transition: background .15s;
+    }
+    .agenda-item:hover { background: rgba(255,255,255,.06); }
+    .agenda-time {
+      font-size: 13px; font-weight: 600; color: var(--suave); padding-top: 2px;
+    }
+    .agenda-event-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .agenda-event-desc { font-size: 13px; color: rgba(255,255,255,.45); }
+    .agenda-tag { flex-shrink: 0; }
+
+    /* ─── SPEAKERS ───────────────────────────────────────────── */
+    .speakers-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 24px; margin-top: 48px;
+    }
+    .speaker-card { text-align: center; padding: 32px 20px; }
+    .speaker-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      margin: 0 auto 16px;
+      background: rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 700;
+      border: 2px solid rgba(255,255,255,.1);
+    }
+    .speaker-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .speaker-role { font-size: 13px; color: rgba(255,255,255,.45); }
+    .speaker-company { font-size: 12px; color: rgba(255,255,255,.3); margin-top: 2px; }
+
+    /* ─── PREMIOS ─────────────────────────────────────────────── */
+    #premios { background: rgba(255,255,255,.02); }
+    .premios-podium {
+      display: grid; grid-template-columns: 1fr 1.2fr 1fr;
+      gap: 16px; margin-top: 48px; align-items: end;
+    }
+    .premio-card {
+      text-align: center; padding: 32px 24px;
+      border-radius: var(--radius); position: relative; overflow: hidden;
+    }
+    .premio-card.gold {
+      background: linear-gradient(180deg, rgba(218,31,168,.15) 0%, rgba(0,41,230,.12) 100%);
+      border: 1px solid rgba(218,31,168,.3);
+    }
+    .premio-card.silver {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+    }
+    .premio-card.bronze {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+    }
+    .premio-pos {
+      font-size: 40px; font-weight: 700; margin-bottom: 8px;
+    }
+    .premio-amount {
+      font-size: 36px; font-weight: 700; letter-spacing: -.03em;
+      margin-bottom: 8px;
+    }
+    .premio-amount.gold { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .premio-desc { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.5; }
+    @media (max-width: 600px) {
+      .premios-podium { grid-template-columns: 1fr; }
+    }
+
+    /* ─── SPONSORS ────────────────────────────────────────────── */
+    .sponsors-tier { margin-bottom: 48px; }
+    .sponsors-tier-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--suave); margin-bottom: 20px;
+    }
+    .sponsors-logos {
+      display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+    }
+    .sponsor-pill {
+      padding: 12px 24px; border-radius: 8px;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09);
+      font-size: 14px; font-weight: 600; color: rgba(255,255,255,.6);
+      transition: all .15s;
+    }
+    .sponsor-pill:hover { background: rgba(255,255,255,.1); color: var(--blanco); }
+    .sponsor-pill.large { font-size: 16px; padding: 14px 28px; }
+
+    /* ─── FAQ ─────────────────────────────────────────────────── */
+    .faq-list { margin-top: 48px; max-width: 760px; }
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .faq-question {
+      width: 100%; background: none; border: none; color: var(--blanco);
+      text-align: left; padding: 20px 0; font-size: 16px; font-weight: 600;
+      cursor: pointer; display: flex; justify-content: space-between;
+      align-items: center; gap: 16px;
+    }
+    .faq-arrow { flex-shrink: 0; transition: transform .2s; font-size: 18px; color: var(--suave); }
+    .faq-answer {
+      font-size: 14px; color: rgba(255,255,255,.55); line-height: 1.7;
+      max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s ease;
+      padding: 0;
+    }
+    .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 20px; }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+    /* ─── CTA FINAL ──────────────────────────────────────────── */
+    #cta-final {
+      padding: 96px 0; text-align: center;
+      background: linear-gradient(180deg, transparent 0%, rgba(77,17,217,.12) 100%);
+    }
+    #cta-final .section-title { max-width: 560px; margin: 0 auto 24px; }
+    #cta-final .section-lead { margin: 0 auto 40px; text-align: center; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      padding: 40px 0; border-top: 1px solid rgba(255,255,255,.07);
+      background: rgba(0,0,0,.3);
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 700; letter-spacing: -.02em; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--suave); transition: color .15s; }
+    .footer-links a:hover { color: var(--blanco); }
+    .footer-copy { font-size: 12px; color: var(--suave); }
+
+    /* ─── VIEWS ──────────────────────────────────────────────── */
+    .view { display: none !important; }
+    .view.active { display: block !important; }
+
+    /* ─── AUTH VIEWS ─────────────────────────────────────────── */
+    .auth-page {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 80px 24px 40px;
+    }
+    .auth-card {
+      width: 100%; max-width: 480px; background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 40px;
+    }
+    .auth-logo {
+      font-size: 20px; font-weight: 700; letter-spacing: -.03em;
+      margin-bottom: 32px; display: block;
+    }
+    .auth-title { font-size: 26px; font-weight: 700; margin-bottom: 8px; letter-spacing: -.02em; }
+    .auth-sub { font-size: 14px; color: rgba(255,255,255,.45); margin-bottom: 32px; }
+    .form-group { margin-bottom: 18px; }
+    .form-label {
+      display: block; font-size: 13px; font-weight: 600;
+      margin-bottom: 6px; color: rgba(255,255,255,.7);
+    }
+    .form-input, .form-select {
+      width: 100%; padding: 11px 14px; border-radius: 8px;
+      background: rgba(255,255,255,.07); border: 1.5px solid rgba(255,255,255,.12);
+      color: var(--blanco); font-size: 14px; outline: none; transition: border-color .15s;
+    }
+    .form-input::placeholder { color: rgba(255,255,255,.3); }
+    .form-input:focus, .form-select:focus { border-color: rgba(77,17,217,.8); }
+    .form-select option { background: #1a2535; color: var(--blanco); }
+    .form-check {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.5;
+    }
+    .form-check input[type=checkbox] { flex-shrink: 0; margin-top: 2px; accent-color: #4D11D9; }
+    .form-check a { color: rgba(255,255,255,.7); text-decoration: underline; }
+    .form-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0; font-size: 13px; color: var(--suave);
+    }
+    .form-divider::before, .form-divider::after {
+      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.1);
+    }
+    .auth-link { font-size: 14px; color: rgba(255,255,255,.45); margin-top: 20px; text-align: center; }
+    .auth-link a { color: rgba(255,255,255,.8); text-decoration: underline; cursor: pointer; }
+    .btn-full { width: 100%; justify-content: center; padding: 13px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* ─── PRIVATE AREA ───────────────────────────────────────── */
+    #view-private { min-height: 100vh; padding-top: 64px; }
+    .private-layout {
+      max-width: 1120px; margin: 0 auto; padding: 40px 24px;
+      display: grid; grid-template-columns: 240px 1fr; gap: 32px;
+    }
+    @media (max-width: 768px) {
+      .private-layout { grid-template-columns: 1fr; }
+    }
+    .sidebar {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius); padding: 24px; height: fit-content;
+    }
+    .sidebar-user { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .sidebar-avatar {
+      width: 48px; height: 48px; border-radius: 50%; background: var(--gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; margin-bottom: 10px;
+    }
+    .sidebar-name { font-size: 15px; font-weight: 600; }
+    .sidebar-email { font-size: 12px; color: var(--suave); margin-top: 2px; }
+    .sidebar-menu { display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-item {
+      padding: 9px 14px; border-radius: 8px; font-size: 14px; font-weight: 500;
+      color: rgba(255,255,255,.55); cursor: pointer; transition: all .15s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sidebar-item:hover { background: rgba(255,255,255,.07); color: var(--blanco); }
+    .sidebar-item.active { background: rgba(77,17,217,.25); color: var(--blanco); }
+    .sidebar-item.logout { color: rgba(218,31,168,.7); margin-top: 16px; }
+    .sidebar-item.logout:hover { background: rgba(218,31,168,.1); color: rgba(218,31,168,1); }
+
+    .private-content { min-height: 400px; }
+    .private-panel { display: none; }
+    .private-panel.active { display: block; }
+    .panel-title { font-size: 24px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; }
+    .panel-sub { font-size: 14px; color: rgba(255,255,255,.45); margin-bottom: 32px; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    @media (max-width: 500px) { .info-grid { grid-template-columns: 1fr; } }
+    .info-field {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px; padding: 16px;
+    }
+    .info-field-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); margin-bottom: 6px; }
+    .info-field-value { font-size: 15px; font-weight: 500; }
+
+    /* Docs */
+    .doc-item {
+      display: flex; align-items: center; gap: 16px; padding: 16px 20px;
+      border: 1px solid rgba(255,255,255,.08); border-radius: 10px;
+      background: rgba(255,255,255,.03); margin-bottom: 10px; cursor: pointer;
+      transition: all .15s;
+    }
+    .doc-item:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.15); }
+    .doc-icon { font-size: 28px; flex-shrink: 0; }
+    .doc-title { font-size: 15px; font-weight: 600; }
+    .doc-meta { font-size: 12px; color: var(--suave); margin-top: 2px; }
+    .doc-action { margin-left: auto; font-size: 13px; color: rgba(255,255,255,.4); }
+
+    /* Inscripción */
+    .inscripcion-status {
+      display: flex; align-items: center; gap: 12px; padding: 16px 20px;
+      border-radius: 10px; margin-bottom: 28px; font-size: 14px; font-weight: 500;
+    }
+    .inscripcion-status.pending {
+      background: rgba(255,193,7,.08); border: 1px solid rgba(255,193,7,.2);
+      color: rgba(255,193,7,.9);
+    }
+    .inscripcion-status.confirmed {
+      background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2);
+      color: rgba(34,197,94,.9);
+    }
+    .progress-steps {
+      display: flex; gap: 0; margin-bottom: 40px;
+    }
+    .step {
+      flex: 1; text-align: center; position: relative;
+    }
+    .step::after {
+      content: ''; position: absolute; top: 14px; left: 50%; right: -50%;
+      height: 2px; background: rgba(255,255,255,.1); z-index: 0;
+    }
+    .step:last-child::after { display: none; }
+    .step-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; margin: 0 auto 8px;
+      position: relative; z-index: 1;
+      background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.15); color: var(--suave);
+    }
+    .step.done .step-dot { background: var(--gradient); border-color: transparent; color: var(--blanco); }
+    .step.current .step-dot { border-color: #4D11D9; color: var(--blanco); background: rgba(77,17,217,.3); }
+    .step-label { font-size: 11px; color: var(--suave); }
+    .step.done .step-label, .step.current .step-label { color: rgba(255,255,255,.7); }
+
+    /* Success screen */
+    .success-screen { text-align: center; padding: 48px 0; }
+    .success-icon {
+      width: 72px; height: 72px; border-radius: 50%; background: var(--gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin: 0 auto 24px;
+    }
+    .success-title { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+    .success-sub { font-size: 15px; color: rgba(255,255,255,.5); max-width: 400px; margin: 0 auto 32px; }
+
+    /* Error / info */
+    .alert {
+      padding: 12px 16px; border-radius: 8px; font-size: 13px;
+      margin-bottom: 16px; display: none;
+    }
+    .alert.error { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.2); color: rgba(239,68,68,.9); }
+    .alert.success { background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.2); color: rgba(34,197,94,.9); }
+    .alert.show { display: block; }
+
+    /* Confirmation email page */
+    .confirm-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 80px 24px 40px; }
+    .confirm-card { text-align: center; max-width: 460px; }
+    .confirm-icon { font-size: 64px; margin-bottom: 24px; }
+
+    /* Scroll reveal */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
+      .reveal.visible { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ NAV ═══════════════════════════ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showView('public')" style="cursor:pointer">
+      Indes<span>IA</span>Hack
+    </div>
+    <div class="nav-links" id="nav-links-public">
+      <a href="#retos">Retos</a>
+      <a href="#agenda">Agenda</a>
+      <a href="#speakers">Speakers</a>
+      <a href="#premios">Premios</a>
+      <a href="#sponsors">Sponsors</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-actions" id="nav-actions-guest">
+      <button class="btn btn-ghost" style="padding:8px 16px;font-size:14px" onclick="showView('login')">Entrar</button>
+      <button class="btn btn-primary" style="padding:8px 16px;font-size:14px" onclick="showView('register')">Registrarse</button>
+    </div>
+    <div class="nav-user" id="nav-actions-user" style="display:none" onclick="showView('private')">
+      <div class="nav-avatar" id="nav-avatar-letter">U</div>
+      <span id="nav-user-name">Usuario</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ VIEW: PUBLIC ════════════════════════ -->
+<div id="view-public" class="view active">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        18-19 Octubre 2025 · Madrid
+      </div>
+      <h1 class="hero-title">
+        El hackathon<br/><em class="gradient-text">de IA industrial</em><br/>para estudiantes
+      </h1>
+      <p class="hero-lead">
+        48 horas para resolver retos reales de la industria española con Inteligencia Artificial.
+        Propuestos por las mayores empresas del país.
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="showView('register')">Quiero participar →</button>
+        <a href="#retos" class="btn btn-outline">Ver los retos</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-value gradient-text">8</div>
+          <div class="stat-label">Retos industriales</div>
+        </div>
+        <div>
+          <div class="stat-value gradient-text">30.000 €</div>
+          <div class="stat-label">En premios</div>
+        </div>
+        <div>
+          <div class="stat-value gradient-text">500+</div>
+          <div class="stat-label">Participantes</div>
+        </div>
+        <div>
+          <div class="stat-value gradient-text">20+</div>
+          <div class="stat-label">Empresas sponsor</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- RETOS -->
+  <section id="retos" class="section">
+    <div class="container">
+      <p class="section-label reveal">Retos</p>
+      <h2 class="section-title reveal">Problemas reales,<br/>soluciones con IA</h2>
+      <p class="section-lead reveal">Cada reto está propuesto por una empresa real del ecosistema IndesIA. Tendrás acceso a datos y mentores del sector durante las 48 horas.</p>
+      <div class="retos-grid">
+        <div class="card reveal">
+          <div class="reto-num gradient-text">01</div>
+          <div class="reto-title">Mantenimiento predictivo en planta</div>
+          <p class="reto-desc">Desarrolla un modelo de IA que anticipe fallos en equipos industriales a partir de series temporales de sensores IoT.</p>
+          <div class="reto-sponsor">Propuesto por · Repsol</div>
+        </div>
+        <div class="card reveal">
+          <div class="reto-num gradient-text">02</div>
+          <div class="reto-title">Optimización de cadena de suministro</div>
+          <p class="reto-desc">Usa IA para reducir tiempos de entrega y costes logísticos en una red de distribución con datos históricos reales.</p>
+          <div class="reto-sponsor">Propuesto por · Inditex</div>
+        </div>
+        <div class="card reveal">
+          <div class="reto-num gradient-text">03</div>
+          <div class="reto-title">Detección de anomalías en fabricación</div>
+          <p class="reto-desc">Visión artificial para identificar defectos en líneas de producción a partir de imágenes de cámaras industriales.</p>
+          <div class="reto-sponsor">Propuesto por · Gestamp</div>
+        </div>
+        <div class="card reveal">
+          <div class="reto-num gradient-text">04</div>
+          <div class="reto-title">IA para eficiencia energética</div>
+          <p class="reto-desc">Predice y optimiza el consumo energético de instalaciones industriales integrando datos meteorológicos y de producción.</p>
+          <div class="reto-sponsor">Propuesto por · Naturgy</div>
+        </div>
+        <div class="card reveal">
+          <div class="reto-num gradient-text">05</div>
+          <div class="reto-title">Asistente inteligente de seguridad</div>
+          <p class="reto-desc">Diseña un sistema de IA que detecte riesgos laborales en tiempo real usando vídeo y datos de entorno.</p>
+          <div class="reto-sponsor">Propuesto por · Acciona</div>
+        </div>
+        <div class="card reveal">
+          <div class="reto-num gradient-text">06</div>
+          <div class="reto-title">Reto libre: IA en la industria</div>
+          <p class="reto-desc">Tu equipo propone el problema. El jurado valorará originalidad, viabilidad técnica e impacto potencial.</p>
+          <div class="reto-sponsor">Reto abierto · IndesIA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- AGENDA -->
+  <section id="agenda" class="section">
+    <div class="container">
+      <p class="section-label reveal">Agenda</p>
+      <h2 class="section-title reveal">48 horas de<br/>innovación intensa</h2>
+      <div class="agenda-days">
+        <button class="day-tab active" onclick="switchDay(this,'day1')">Viernes 18 Oct</button>
+        <button class="day-tab" onclick="switchDay(this,'day2')">Sábado 19 Oct</button>
+        <button class="day-tab" onclick="switchDay(this,'day3')">Domingo 20 Oct</button>
+      </div>
+      <div id="day1" class="agenda-list">
+        <div class="agenda-item">
+          <div class="agenda-time">16:00</div>
+          <div><div class="agenda-event-title">Acreditación y bienvenida</div><div class="agenda-event-desc">Recogida de acreditaciones, networking inicial y kit del participante</div></div>
+          <div class="agenda-tag"><span class="tag">Organización</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">17:00</div>
+          <div><div class="agenda-event-title">Apertura oficial</div><div class="agenda-event-desc">Discurso de apertura por el equipo de IndesIA y presentación de los retos</div></div>
+          <div class="agenda-tag"><span class="tag">Plenary</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">18:00</div>
+          <div><div class="agenda-event-title">Formación de equipos</div><div class="agenda-event-desc">Speed-networking para encontrar compañeros de equipo y sesión de Q&amp;A con mentores</div></div>
+          <div class="agenda-tag"><span class="tag">Networking</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">19:00</div>
+          <div><div class="agenda-event-title">¡Arranca el hackathon!</div><div class="agenda-event-desc">Los equipos empiezan a trabajar. Acceso a los datos y entornos de desarrollo</div></div>
+          <div class="agenda-tag"><span class="tag" style="background:rgba(77,17,217,.3)">Hack</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">21:00</div>
+          <div><div class="agenda-event-title">Cena y hackeo</div><div class="agenda-event-desc">Cena para todos los participantes. El hackathon continúa</div></div>
+          <div class="agenda-tag"><span class="tag">Social</span></div>
+        </div>
+      </div>
+      <div id="day2" class="agenda-list" style="display:none">
+        <div class="agenda-item">
+          <div class="agenda-time">08:00</div>
+          <div><div class="agenda-event-title">Desayuno</div><div class="agenda-event-desc">Desayuno disponible para todos los participantes</div></div>
+          <div class="agenda-tag"><span class="tag">Social</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">10:00</div>
+          <div><div class="agenda-event-title">Check-in de mentores</div><div class="agenda-event-desc">Los mentores de cada empresa se sientan con los equipos. Ronda de feedback</div></div>
+          <div class="agenda-tag"><span class="tag">Mentoring</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">12:00</div>
+          <div><div class="agenda-event-title">Ponencia: IA en la industria española</div><div class="agenda-event-desc">Charla magistral sobre el impacto real de la IA en el tejido industrial</div></div>
+          <div class="agenda-tag"><span class="tag">Plenary</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">14:00</div>
+          <div><div class="agenda-event-title">Comida y networking</div><div class="agenda-event-desc">Almuerzo para participantes y mentores</div></div>
+          <div class="agenda-tag"><span class="tag">Social</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">20:00</div>
+          <div><div class="agenda-event-title">Milestone check</div><div class="agenda-event-desc">Demo rápida del progreso de cada equipo ante su mentor. No evaluable</div></div>
+          <div class="agenda-tag"><span class="tag">Mentoring</span></div>
+        </div>
+      </div>
+      <div id="day3" class="agenda-list" style="display:none">
+        <div class="agenda-item">
+          <div class="agenda-time">08:00</div>
+          <div><div class="agenda-event-title">Desayuno final</div><div class="agenda-event-desc">Última recarga antes de las presentaciones</div></div>
+          <div class="agenda-tag"><span class="tag">Social</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">10:00</div>
+          <div><div class="agenda-event-title">Congelación del código</div><div class="agenda-event-desc">Se cierra el tiempo de desarrollo. Los equipos preparan sus demos</div></div>
+          <div class="agenda-tag"><span class="tag" style="background:rgba(239,68,68,.25);color:rgba(239,68,68,.9)">Deadline</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">11:00</div>
+          <div><div class="agenda-event-title">Presentaciones finales</div><div class="agenda-event-desc">Cada equipo dispone de 5 min de demo + 3 min de preguntas ante el jurado</div></div>
+          <div class="agenda-tag"><span class="tag">Evaluación</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">14:00</div>
+          <div><div class="agenda-event-title">Deliberación del jurado</div><div class="agenda-event-desc">El jurado evalúa las propuestas. Almuerzo para todos</div></div>
+          <div class="agenda-tag"><span class="tag">Evaluación</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">16:00</div>
+          <div><div class="agenda-event-title">🏆 Ceremonia de clausura y premios</div><div class="agenda-event-desc">Anuncio de ganadores, entrega de premios y cierre oficial del IndesIAHack 2025</div></div>
+          <div class="agenda-tag"><span class="tag" style="background:rgba(218,31,168,.25);color:rgba(218,31,168,1)">Premios</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- SPEAKERS -->
+  <section id="speakers" class="section">
+    <div class="container">
+      <p class="section-label reveal">Speakers & Jurado</p>
+      <h2 class="section-title reveal">Aprende de quienes<br/>ya lo están haciendo</h2>
+      <p class="section-lead reveal">Directivos, investigadores y practitioners que están implantando IA real en la industria española.</p>
+      <div class="speakers-grid">
+        <div class="card speaker-card reveal">
+          <div class="speaker-avatar">MR</div>
+          <div class="speaker-name">María Rodríguez</div>
+          <div class="speaker-role">Chief Data Officer</div>
+          <div class="speaker-company">Repsol</div>
+        </div>
+        <div class="card speaker-card reveal">
+          <div class="speaker-avatar">JC</div>
+          <div class="speaker-name">Javier Cortés</div>
+          <div class="speaker-role">Head of AI & Analytics</div>
+          <div class="speaker-company">Gestamp</div>
+        </div>
+        <div class="card speaker-card reveal">
+          <div class="speaker-avatar">AL</div>
+          <div class="speaker-name">Ana López</div>
+          <div class="speaker-role">Directora de Innovación</div>
+          <div class="speaker-company">Inditex</div>
+        </div>
+        <div class="card speaker-card reveal">
+          <div class="speaker-avatar">PG</div>
+          <div class="speaker-name">Pablo García</div>
+          <div class="speaker-role">Research Lead · ML</div>
+          <div class="speaker-company">Universidad Politécnica</div>
+        </div>
+        <div class="card speaker-card reveal">
+          <div class="speaker-avatar">LM</div>
+          <div class="speaker-name">Laura Martínez</div>
+          <div class="speaker-role">AI Product Director</div>
+          <div class="speaker-company">Telefónica</div>
+        </div>
+        <div class="card speaker-card reveal">
+          <div class="speaker-avatar">DS</div>
+          <div class="speaker-name">Diego Sánchez</div>
+          <div class="speaker-role">VP Engineering</div>
+          <div class="speaker-company">Google Cloud ES</div>
+        </div>
+        <div class="card speaker-card reveal">
+          <div class="speaker-avatar">EM</div>
+          <div class="speaker-name">Elena Moreno</div>
+          <div class="speaker-role">Data Science Manager</div>
+          <div class="speaker-company">Naturgy</div>
+        </div>
+        <div class="card speaker-card reveal">
+          <div class="speaker-avatar">RF</div>
+          <div class="speaker-name">Roberto Fernández</div>
+          <div class="speaker-role">CEO</div>
+          <div class="speaker-company">IA Solver</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- PREMIOS -->
+  <section id="premios" class="section">
+    <div class="container">
+      <p class="section-label reveal">Premios</p>
+      <h2 class="section-title reveal">30.000 € en premios<br/>y mucho más</h2>
+      <p class="section-lead reveal">Además del premio económico, los mejores equipos optarán a prácticas y proyectos con las empresas del ecosistema IndesIA.</p>
+      <div class="premios-podium">
+        <div class="premio-card silver reveal" style="margin-bottom:0">
+          <div class="premio-pos">🥈</div>
+          <div class="premio-amount">8.000 €</div>
+          <div class="tag" style="margin-bottom:12px">2º premio</div>
+          <p class="premio-desc">Acceso prioritario a programa de prácticas en empresa del ecosistema IndesIA</p>
+        </div>
+        <div class="premio-card gold reveal">
+          <div class="premio-pos">🥇</div>
+          <div class="premio-amount gold">15.000 €</div>
+          <div class="tag" style="margin-bottom:12px;background:rgba(218,31,168,.2)">Gran Premio</div>
+          <p class="premio-desc">Mentoría directa con el CDO de la empresa del reto ganador y presentación en el congreso IndesIA anual</p>
+        </div>
+        <div class="premio-card bronze reveal" style="margin-bottom:0">
+          <div class="premio-pos">🥉</div>
+          <div class="premio-amount">5.000 €</div>
+          <div class="tag" style="margin-bottom:12px">3º premio</div>
+          <p class="premio-desc">Kit de créditos cloud (GCP, Azure) y suscripción a herramientas de IA profesional</p>
+        </div>
+      </div>
+      <div style="margin-top:32px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">
+        <div class="card reveal" style="padding:20px 24px">
+          <div style="font-size:24px;margin-bottom:8px">🌟</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px">Premio al Mejor Reto Libre</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.4)">2.000 € + acceso a aceleración IndesIA</div>
+        </div>
+        <div class="card reveal" style="padding:20px 24px">
+          <div style="font-size:24px;margin-bottom:8px">💡</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px">Premio a la Mejor Demo Técnica</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.4)">Valorado por el panel técnico del jurado</div>
+        </div>
+        <div class="card reveal" style="padding:20px 24px">
+          <div style="font-size:24px;margin-bottom:8px">🤝</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px">Premio al Impacto Social</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.4)">IA con impacto en sostenibilidad o sociedad</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- SPONSORS -->
+  <section id="sponsors" class="section">
+    <div class="container">
+      <p class="section-label reveal">Sponsors</p>
+      <h2 class="section-title reveal">Impulsado por la<br/>industria española</h2>
+      <div class="sponsors-tier reveal">
+        <div class="sponsors-tier-label">Socios promotores</div>
+        <div class="sponsors-logos">
+          <div class="sponsor-pill large">Repsol</div>
+          <div class="sponsor-pill large">Gestamp</div>
+          <div class="sponsor-pill large">Telefónica</div>
+          <div class="sponsor-pill large">Inditex</div>
+        </div>
+      </div>
+      <div class="sponsors-tier reveal">
+        <div class="sponsors-tier-label">Patrocinadores oro</div>
+        <div class="sponsors-logos">
+          <div class="sponsor-pill">Airbus</div>
+          <div class="sponsor-pill">Acerinox</div>
+          <div class="sponsor-pill">Naturgy</div>
+          <div class="sponsor-pill">Sacyr</div>
+          <div class="sponsor-pill">Navantia</div>
+          <div class="sponsor-pill">Acciona</div>
+        </div>
+      </div>
+      <div class="sponsors-tier reveal">
+        <div class="sponsors-tier-label">Partners tecnológicos</div>
+        <div class="sponsors-logos">
+          <div class="sponsor-pill">Google Cloud</div>
+          <div class="sponsor-pill">Databricks</div>
+          <div class="sponsor-pill">Microsoft Azure</div>
+          <div class="sponsor-pill">IA Solver</div>
+          <div class="sponsor-pill">Bluetab</div>
+          <div class="sponsor-pill">Verne Tech</div>
+        </div>
+      </div>
+      <div class="sponsors-tier reveal">
+        <div class="sponsors-tier-label">Colaboradores institucionales</div>
+        <div class="sponsors-logos">
+          <div class="sponsor-pill">EOI</div>
+          <div class="sponsor-pill">BAIC</div>
+          <div class="sponsor-pill">Club CDO</div>
+          <div class="sponsor-pill">FPEmpresa</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <div class="container">
+      <p class="section-label reveal">Preguntas frecuentes</p>
+      <h2 class="section-title reveal">Todo lo que necesitas<br/>saber</h2>
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Quién puede participar?
+            <span class="faq-arrow">↓</span>
+          </button>
+          <div class="faq-answer">El IndesIAHack está abierto a estudiantes universitarios, de FP Superior y recién graduados (hasta 2 años desde la graduación) de cualquier rama: ingeniería, ciencias de datos, informática, matemáticas, física, diseño, ADE... Valoramos la diversidad de perfiles.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Cómo se forman los equipos?
+            <span class="faq-arrow">↓</span>
+          </button>
+          <div class="faq-answer">Los equipos son de 3 a 5 personas. Puedes inscribirte solo o con tu equipo ya formado. Si te apuntas solo, tendremos una sesión de networking el viernes por la tarde para que encuentres compañeros. Al inscribirte puedes indicar si buscas equipo.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Hace falta experiencia previa en IA?
+            <span class="faq-arrow">↓</span>
+          </button>
+          <div class="faq-answer">No es imprescindible, pero sí recomendable tener nociones de programación (Python) y algo de machine learning o análisis de datos. Habrá talleres de formación previa al evento y mentores disponibles durante el hackathon para ayudarte.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Qué incluye la inscripción?
+            <span class="faq-arrow">↓</span>
+          </button>
+          <div class="faq-answer">La participación es completamente gratuita. Incluye acceso a los datos y entornos cloud, comidas y cenas durante el evento, kit del participante, mentoring con expertos de la industria y la posibilidad de ganar los premios.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Dónde se celebra?
+            <span class="faq-arrow">↓</span>
+          </button>
+          <div class="faq-answer">El IndesIAHack 2025 se celebra en Madrid, en las instalaciones del Campus de Innovación de IndesIA. La dirección exacta y las instrucciones de acceso se proporcionarán tras confirmar la inscripción.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Cuándo se abre el plazo de inscripción?
+            <span class="faq-arrow">↓</span>
+          </button>
+          <div class="faq-answer">El plazo de inscripción está abierto desde el 1 de septiembre hasta el 10 de octubre de 2025 o hasta completar las 500 plazas disponibles. Te recomendamos inscribirte cuanto antes.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Puedo quedarme a dormir?
+            <span class="faq-arrow">↓</span>
+          </button>
+          <div class="faq-answer">Sí. El venue dispone de una zona de descanso habilitada para los participantes. También gestionaremos tarifas reducidas en hoteles cercanos para quienes prefieran una cama de verdad.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section id="cta-final">
+    <div class="container">
+      <p class="section-label" style="text-align:center">Inscripción abierta</p>
+      <h2 class="section-title" style="text-align:center">¿Listo para el reto?</h2>
+      <p class="section-lead" style="text-align:center">Plazas limitadas. Únete a los 500 estudiantes que van a resolver los retos de la industria española con IA.</p>
+      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showView('register')" style="font-size:17px;padding:14px 32px">Inscribirme ahora →</button>
+        <button class="btn btn-outline" onclick="showView('login')">Ya tengo cuenta</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">Indes<span class="gradient-text">IA</span>Hack 2025</div>
+          <div style="font-size:12px;color:var(--suave);margin-top:4px">Una iniciativa de IndesIA</div>
+        </div>
+        <div class="footer-links">
+          <a href="#">Bases del hackathon</a>
+          <a href="#">Política de privacidad</a>
+          <a href="#">Contacto</a>
+          <a href="https://www.indesia.org" target="_blank">indesia.org</a>
+        </div>
+        <div class="footer-copy">© 2025 IndesIA · Asociación Española para el uso del Dato y la IA</div>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /view-public -->
+
+
+<!-- ════════════════════════ VIEW: REGISTER ══════════════════════ -->
+<div id="view-register" class="view">
+  <div class="auth-page">
+    <div class="auth-card">
+      <span class="auth-logo">Indes<span class="gradient-text">IA</span>Hack</span>
+      <h1 class="auth-title">Crear cuenta</h1>
+      <p class="auth-sub">Regístrate para participar en el IndesIAHack 2025</p>
+      <div class="alert error" id="reg-error"></div>
+      <form onsubmit="submitRegister(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nombre *</label>
+            <input id="reg-nombre" class="form-input" type="text" placeholder="Nombre" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Apellidos *</label>
+            <input id="reg-apellidos" class="form-input" type="text" placeholder="Apellidos" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Fecha de nacimiento *</label>
+          <input id="reg-dob" class="form-input" type="date" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email *</label>
+          <input id="reg-email" class="form-input" type="email" placeholder="tu@email.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Procedencia *</label>
+          <select id="reg-procedencia" class="form-input form-select" required>
+            <option value="">Selecciona tu centro</option>
+            <option>Universidad Politécnica de Madrid</option>
+            <option>Universidad Complutense de Madrid</option>
+            <option>Universidad Carlos III</option>
+            <option>Universidad Autónoma de Madrid</option>
+            <option>Universitat Politècnica de Catalunya</option>
+            <option>Universidad de Sevilla</option>
+            <option>Universidad de Granada</option>
+            <option>Universidad del País Vasco</option>
+            <option>FP Superior</option>
+            <option>Otra universidad española</option>
+            <option>Universidad extranjera</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Perfil *</label>
+          <select id="reg-perfil" class="form-input form-select" required>
+            <option value="">Selecciona tu perfil</option>
+            <option>Ingeniería informática / Software</option>
+            <option>Ciencia de datos / IA / ML</option>
+            <option>Ingeniería industrial</option>
+            <option>Matemáticas / Estadística / Física</option>
+            <option>Telecomunicaciones</option>
+            <option>Diseño / UX</option>
+            <option>ADE / Económicas</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contraseña *</label>
+          <input id="reg-password" class="form-input" type="password" placeholder="Mínimo 8 caracteres" minlength="8" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirmar contraseña *</label>
+          <input id="reg-password2" class="form-input" type="password" placeholder="Repite la contraseña" required />
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input type="checkbox" id="reg-legal" required />
+            <label for="reg-legal">He leído y acepto las <a href="#">bases del hackathon</a> y la <a href="#">política de privacidad</a> de IndesIA *</label>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:4px">
+          <div class="form-check">
+            <input type="checkbox" id="reg-comms" />
+            <label for="reg-comms">Acepto recibir comunicaciones sobre actividades e iniciativas de IndesIA</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px">Crear cuenta →</button>
+      </form>
+      <p class="auth-link">¿Ya tienes cuenta? <a onclick="showView('login')">Inicia sesión</a></p>
+      <p class="auth-link" style="margin-top:8px"><a onclick="showView('public')">← Volver a la web</a></p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════ VIEW: CONFIRM EMAIL ════════════════════ -->
+<div id="view-confirm-email" class="view">
+  <div class="confirm-page">
+    <div class="confirm-card">
+      <div class="confirm-icon">📧</div>
+      <h1 class="section-title">Confirma tu email</h1>
+      <p class="section-lead" style="text-align:center;margin:16px auto 32px">
+        Hemos enviado un enlace de confirmación a <strong id="confirm-email-addr">tu@email.com</strong>.
+        Revisa tu bandeja de entrada y confirma tu cuenta para continuar.
+      </p>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:20px;margin-bottom:24px;font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;text-align:left">
+        <strong style="color:rgba(255,255,255,.8)">¿No has recibido el email?</strong><br/>
+        Revisa la carpeta de spam. Si sigue sin aparecer, espera unos minutos y vuelve a intentarlo.
+      </div>
+      <button class="btn btn-outline btn-full" onclick="showView('login')">Ir a iniciar sesión</button>
+      <p class="auth-link" style="margin-top:16px"><a onclick="showView('register')">← Volver al registro</a></p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════ VIEW: LOGIN ══════════════════════════ -->
+<div id="view-login" class="view">
+  <div class="auth-page">
+    <div class="auth-card">
+      <span class="auth-logo">Indes<span class="gradient-text">IA</span>Hack</span>
+      <h1 class="auth-title">Bienvenido/a</h1>
+      <p class="auth-sub">Accede a tu área privada</p>
+      <div class="alert error" id="login-error"></div>
+      <div class="alert success" id="login-success"></div>
+      <form onsubmit="submitLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input id="login-email" class="form-input" type="email" placeholder="tu@email.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <input id="login-password" class="form-input" type="password" placeholder="Tu contraseña" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px">Entrar →</button>
+      </form>
+      <div class="form-divider">o</div>
+      <p style="text-align:center;font-size:13px;color:rgba(255,255,255,.45)">
+        <a onclick="showView('forgot')" style="color:rgba(255,255,255,.65);cursor:pointer;text-decoration:underline">He olvidado mi contraseña</a>
+      </p>
+      <p class="auth-link">¿No tienes cuenta? <a onclick="showView('register')">Regístrate gratis</a></p>
+      <p class="auth-link" style="margin-top:8px"><a onclick="showView('public')">← Volver a la web</a></p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════ VIEW: FORGOT PASSWORD ════════════════════ -->
+<div id="view-forgot" class="view">
+  <div class="auth-page">
+    <div class="auth-card">
+      <span class="auth-logo">Indes<span class="gradient-text">IA</span>Hack</span>
+      <h1 class="auth-title">Recuperar acceso</h1>
+      <p class="auth-sub">Te enviaremos un enlace para restablecer tu contraseña</p>
+      <div class="alert success" id="forgot-success"></div>
+      <form onsubmit="submitForgot(event)" id="forgot-form">
+        <div class="form-group">
+          <label class="form-label">Email de tu cuenta</label>
+          <input id="forgot-email" class="form-input" type="email" placeholder="tu@email.com" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Enviar enlace →</button>
+      </form>
+      <p class="auth-link"><a onclick="showView('login')">← Volver a iniciar sesión</a></p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════ VIEW: PRIVATE ═════════════════════════ -->
+<div id="view-private" class="view">
+  <div class="private-layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebar-avatar">U</div>
+        <div class="sidebar-name" id="sidebar-name">Usuario</div>
+        <div class="sidebar-email" id="sidebar-email">user@email.com</div>
+      </div>
+      <div class="sidebar-menu">
+        <div class="sidebar-item active" onclick="showPanel('cuenta')">👤 Mi cuenta</div>
+        <div class="sidebar-item" onclick="showPanel('password')">🔒 Cambiar contraseña</div>
+        <div class="sidebar-item" onclick="showPanel('docs')">📄 Documentación privada</div>
+        <div class="sidebar-item" onclick="showPanel('inscripcion')">✅ Inscripción al hackathon</div>
+        <div class="sidebar-item logout" onclick="logout()">↩ Cerrar sesión</div>
+      </div>
+    </div>
+
+    <!-- PANELS -->
+    <div class="private-content">
+
+      <!-- PANEL: Mi cuenta -->
+      <div id="panel-cuenta" class="private-panel active">
+        <div class="panel-title">Mi cuenta</div>
+        <div class="panel-sub">Tus datos de registro en el IndesIAHack 2025</div>
+        <div class="info-grid" id="info-grid">
+          <!-- filled by JS -->
+        </div>
+        <button class="btn btn-ghost" onclick="showPanel('password')" style="font-size:14px">Cambiar contraseña →</button>
+      </div>
+
+      <!-- PANEL: Cambiar contraseña -->
+      <div id="panel-password" class="private-panel">
+        <div class="panel-title">Cambiar contraseña</div>
+        <div class="panel-sub">Actualiza tu contraseña de acceso</div>
+        <div class="alert success" id="pwd-success"></div>
+        <div style="max-width:420px">
+          <form onsubmit="submitChangePassword(event)">
+            <div class="form-group">
+              <label class="form-label">Contraseña actual</label>
+              <input id="pwd-current" class="form-input" type="password" placeholder="Tu contraseña actual" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nueva contraseña</label>
+              <input id="pwd-new" class="form-input" type="password" placeholder="Mínimo 8 caracteres" minlength="8" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirmar nueva contraseña</label>
+              <input id="pwd-new2" class="form-input" type="password" placeholder="Repite la nueva contraseña" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar contraseña</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- PANEL: Documentación -->
+      <div id="panel-docs" class="private-panel">
+        <div class="panel-title">Documentación privada</div>
+        <div class="panel-sub">Recursos exclusivos para participantes registrados</div>
+        <div class="doc-item" onclick="alert('Descargando PDF...')">
+          <div class="doc-icon">📋</div>
+          <div>
+            <div class="doc-title">Descripción detallada de los retos</div>
+            <div class="doc-meta">PDF · 2.4 MB · Actualizado 15 sep 2025</div>
+          </div>
+          <div class="doc-action">⬇ Descargar</div>
+        </div>
+        <div class="doc-item" onclick="alert('Descargando PDF...')">
+          <div class="doc-icon">📊</div>
+          <div>
+            <div class="doc-title">Datasets de entrenamiento — Reto 01 Mantenimiento</div>
+            <div class="doc-meta">ZIP · 180 MB · Datos anonimizados de sensores</div>
+          </div>
+          <div class="doc-action">⬇ Descargar</div>
+        </div>
+        <div class="doc-item" onclick="alert('Descargando PDF...')">
+          <div class="doc-icon">📊</div>
+          <div>
+            <div class="doc-title">Datasets de entrenamiento — Reto 02 Supply Chain</div>
+            <div class="doc-meta">ZIP · 95 MB · Datos logísticos sintéticos</div>
+          </div>
+          <div class="doc-action">⬇ Descargar</div>
+        </div>
+        <div class="doc-item" onclick="alert('Abriendo guía...')">
+          <div class="doc-icon">🚀</div>
+          <div>
+            <div class="doc-title">Guía de entornos cloud y accesos</div>
+            <div class="doc-meta">PDF · 1.1 MB · Credenciales y tutoriales GCP / Azure</div>
+          </div>
+          <div class="doc-action">⬇ Descargar</div>
+        </div>
+        <div class="doc-item" onclick="alert('Abriendo guía...')">
+          <div class="doc-icon">📅</div>
+          <div>
+            <div class="doc-title">Agenda detallada y mapa del recinto</div>
+            <div class="doc-meta">PDF · 0.8 MB · Salas, WiFi, zonas de descanso</div>
+          </div>
+          <div class="doc-action">⬇ Descargar</div>
+        </div>
+        <div class="doc-item" onclick="alert('Abriendo reglamento...')">
+          <div class="doc-icon">⚖️</div>
+          <div>
+            <div class="doc-title">Reglamento completo y criterios de evaluación</div>
+            <div class="doc-meta">PDF · 0.6 MB</div>
+          </div>
+          <div class="doc-action">⬇ Descargar</div>
+        </div>
+      </div>
+
+      <!-- PANEL: Inscripción -->
+      <div id="panel-inscripcion" class="private-panel">
+        <div id="panel-inscripcion-form">
+          <div class="panel-title">Inscripción al hackathon</div>
+          <div class="panel-sub">Confirma tu participación en el IndesIAHack 2025</div>
+
+          <div class="progress-steps" style="max-width:500px">
+            <div class="step done">
+              <div class="step-dot">✓</div>
+              <div class="step-label">Registro</div>
+            </div>
+            <div class="step done">
+              <div class="step-dot">✓</div>
+              <div class="step-label">Confirmar email</div>
+            </div>
+            <div class="step current" id="step-inscripcion">
+              <div class="step-dot">3</div>
+              <div class="step-label">Inscripción</div>
+            </div>
+            <div class="step" id="step-confirmed">
+              <div class="step-dot">4</div>
+              <div class="step-label">Confirmado</div>
+            </div>
+          </div>
+
+          <div style="max-width:520px">
+            <form onsubmit="submitInscripcion(event)">
+              <div class="form-group">
+                <label class="form-label">Confirmación de participación</label>
+                <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px;font-size:14px;color:rgba(255,255,255,.6);line-height:1.6">
+                  Confirmo que asistiré presencialmente al IndesIAHack 2025 los días
+                  <strong style="color:var(--blanco)">18, 19 y 20 de octubre en Madrid</strong>.
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Procedencia (confirmar) *</label>
+                <select id="ins-procedencia" class="form-input form-select" required>
+                  <option value="">Selecciona...</option>
+                  <option>Universidad Politécnica de Madrid</option>
+                  <option>Universidad Complutense de Madrid</option>
+                  <option>Universidad Carlos III</option>
+                  <option>Universidad Autónoma de Madrid</option>
+                  <option>Universitat Politècnica de Catalunya</option>
+                  <option>Universidad de Sevilla</option>
+                  <option>Universidad de Granada</option>
+                  <option>Universidad del País Vasco</option>
+                  <option>FP Superior</option>
+                  <option>Otra universidad española</option>
+                  <option>Universidad extranjera</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">¿Ya tienes equipo formado?</label>
+                <select id="ins-equipo" class="form-input form-select">
+                  <option value="no">No, busco equipo en el evento</option>
+                  <option value="si">Sí, vengo con mi equipo</option>
+                  <option value="parcial">Tengo parte del equipo, busco más miembros</option>
+                </select>
+              </div>
+              <div class="form-group" id="ins-equipo-nombre-wrap" style="display:none">
+                <label class="form-label">Nombre del equipo (opcional)</label>
+                <input id="ins-equipo-nombre" class="form-input" type="text" placeholder="Ej: Neural Ninjas" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Reto de interés principal</label>
+                <select id="ins-reto" class="form-input form-select">
+                  <option>01 – Mantenimiento predictivo</option>
+                  <option>02 – Cadena de suministro</option>
+                  <option>03 – Detección de anomalías</option>
+                  <option>04 – Eficiencia energética</option>
+                  <option>05 – Seguridad laboral con IA</option>
+                  <option>06 – Reto libre</option>
+                  <option>Aún no lo sé</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Restricciones alimentarias</label>
+                <select id="ins-dieta" class="form-input form-select">
+                  <option>Sin restricciones</option>
+                  <option>Vegetariano/a</option>
+                  <option>Vegano/a</option>
+                  <option>Sin gluten</option>
+                  <option>Sin lactosa</option>
+                  <option>Halal</option>
+                  <option>Otra (indicar en comentarios)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <input type="checkbox" id="ins-confirm" required />
+                  <label for="ins-confirm">Confirmo mi asistencia presencial al hackathon y acepto las <a href="#">bases del evento</a> *</label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" style="margin-top:8px">Confirmar inscripción →</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Estado: ya inscrito -->
+        <div id="panel-inscripcion-confirmed" style="display:none">
+          <div class="success-screen">
+            <div class="success-icon">🎉</div>
+            <div class="success-title">¡Inscripción confirmada!</div>
+            <p class="success-sub">Estás oficialmente en el IndesIAHack 2025. Recibirás un email de confirmación con todos los detalles.</p>
+            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:24px;margin-bottom:28px;text-align:left">
+              <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);margin-bottom:16px">Detalles de tu inscripción</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:14px">
+                <div><span style="color:var(--suave)">Evento</span><br/><strong>IndesIAHack 2025</strong></div>
+                <div><span style="color:var(--suave)">Fechas</span><br/><strong>18-20 Oct, Madrid</strong></div>
+                <div><span style="color:var(--suave)">Reto</span><br/><strong id="confirmed-reto">–</strong></div>
+                <div><span style="color:var(--suave)">Equipo</span><br/><strong id="confirmed-equipo">Busco equipo</strong></div>
+              </div>
+            </div>
+            <button class="btn btn-ghost" onclick="showPanel('docs')" style="margin:0 auto">Ver documentación privada →</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /private-content -->
+  </div><!-- /private-layout -->
+</div><!-- /view-private -->
+
+
+<!-- ══════════════════════════ JS ═══════════════════════════════ -->
+<script>
+  // ── STATE ──────────────────────────────────────────────────
+  let currentUser = null; // { nombre, apellidos, email, procedencia, perfil, dob }
+  let inscrito = false;
+  let inscripcionData = {};
+
+  // ── VIEW ROUTING ───────────────────────────────────────────
+  function showView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    window.scrollTo(0, 0);
+
+    // Nav visibility
+    const guestActions = document.getElementById('nav-actions-guest');
+    const userActions  = document.getElementById('nav-actions-user');
+    const publicLinks  = document.getElementById('nav-links-public');
+    if (name === 'public') {
+      guestActions.style.display = currentUser ? 'none' : 'flex';
+      userActions.style.display  = currentUser ? 'flex' : 'none';
+      publicLinks.style.display  = 'flex';
+    } else {
+      guestActions.style.display = 'none';
+      userActions.style.display  = currentUser ? 'flex' : 'none';
+      publicLinks.style.display  = 'none';
+    }
+  }
+
+  // ── REGISTER ───────────────────────────────────────────────
+  function submitRegister(e) {
+    e.preventDefault();
+    const p1 = document.getElementById('reg-password').value;
+    const p2 = document.getElementById('reg-password2').value;
+    const err = document.getElementById('reg-error');
+    err.classList.remove('show');
+    if (p1 !== p2) {
+      err.textContent = 'Las contraseñas no coinciden.';
+      err.classList.add('show');
+      return;
+    }
+    currentUser = {
+      nombre:      document.getElementById('reg-nombre').value,
+      apellidos:   document.getElementById('reg-apellidos').value,
+      email:       document.getElementById('reg-email').value,
+      dob:         document.getElementById('reg-dob').value,
+      procedencia: document.getElementById('reg-procedencia').value,
+      perfil:      document.getElementById('reg-perfil').value,
+    };
+    document.getElementById('confirm-email-addr').textContent = currentUser.email;
+    showView('confirm-email');
+  }
+
+  // ── LOGIN ──────────────────────────────────────────────────
+  function submitLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const pass  = document.getElementById('login-password').value;
+    const err   = document.getElementById('login-error');
+    err.classList.remove('show');
+
+    // Demo: accept any email with password "demo1234" or if previously registered
+    if (pass.length < 6) {
+      err.textContent = 'Contraseña incorrecta. (Demo: usa cualquier contraseña de 6+ caracteres)';
+      err.classList.add('show');
+      return;
+    }
+    if (!currentUser) {
+      currentUser = {
+        nombre: email.split('@')[0],
+        apellidos: '',
+        email: email,
+        dob: '2000-01-01',
+        procedencia: 'Universidad Politécnica de Madrid',
+        perfil: 'Ciencia de datos / IA / ML',
+      };
+    }
+    loginSuccess();
+  }
+
+  function loginSuccess() {
+    const initials = (currentUser.nombre[0] + (currentUser.apellidos[0] || '')).toUpperCase();
+    const fullName = currentUser.nombre + (currentUser.apellidos ? ' ' + currentUser.apellidos : '');
+    document.getElementById('nav-avatar-letter').textContent = initials;
+    document.getElementById('nav-user-name').textContent = currentUser.nombre;
+    document.getElementById('sidebar-avatar').textContent  = initials;
+    document.getElementById('sidebar-name').textContent    = fullName;
+    document.getElementById('sidebar-email').textContent   = currentUser.email;
+
+    // Fill info grid
+    const grid = document.getElementById('info-grid');
+    const fields = [
+      ['Nombre', currentUser.nombre],
+      ['Apellidos', currentUser.apellidos || '—'],
+      ['Email', currentUser.email],
+      ['Fecha de nacimiento', currentUser.dob || '—'],
+      ['Procedencia', currentUser.procedencia || '—'],
+      ['Perfil', currentUser.perfil || '—'],
+    ];
+    grid.innerHTML = fields.map(([label,val]) =>
+      `<div class="info-field"><div class="info-field-label">${label}</div><div class="info-field-value">${val}</div></div>`
+    ).join('');
+
+    showView('private');
+    showPanel('cuenta');
+  }
+
+  // ── FORGOT PASSWORD ────────────────────────────────────────
+  function submitForgot(e) {
+    e.preventDefault();
+    const email = document.getElementById('forgot-email').value;
+    document.getElementById('forgot-success').textContent =
+      `Hemos enviado un enlace de recuperación a ${email}. Revisa tu bandeja de entrada.`;
+    document.getElementById('forgot-success').classList.add('show');
+    document.getElementById('forgot-form').style.display = 'none';
+  }
+
+  // ── CHANGE PASSWORD ────────────────────────────────────────
+  function submitChangePassword(e) {
+    e.preventDefault();
+    const n1 = document.getElementById('pwd-new').value;
+    const n2 = document.getElementById('pwd-new2').value;
+    const s  = document.getElementById('pwd-success');
+    if (n1 !== n2) { alert('Las contraseñas no coinciden.'); return; }
+    s.textContent = '✓ Contraseña actualizada correctamente.';
+    s.classList.add('show');
+    e.target.reset();
+    setTimeout(() => s.classList.remove('show'), 4000);
+  }
+
+  // ── INSCRIPCIÓN ────────────────────────────────────────────
+  document.getElementById('ins-equipo').addEventListener('change', function() {
+    document.getElementById('ins-equipo-nombre-wrap').style.display =
+      this.value === 'si' ? 'block' : 'none';
+  });
+
+  function submitInscripcion(e) {
+    e.preventDefault();
+    inscrito = true;
+    inscripcionData = {
+      reto:   document.getElementById('ins-reto').value,
+      equipo: document.getElementById('ins-equipo').options[document.getElementById('ins-equipo').selectedIndex].text,
+    };
+    document.getElementById('confirmed-reto').textContent = inscripcionData.reto;
+    document.getElementById('confirmed-equipo').textContent = inscripcionData.equipo;
+    document.getElementById('panel-inscripcion-form').style.display = 'none';
+    document.getElementById('panel-inscripcion-confirmed').style.display = 'block';
+
+    // Update step 4
+    document.getElementById('step-inscripcion').classList.remove('current');
+    document.getElementById('step-inscripcion').classList.add('done');
+    document.getElementById('step-inscripcion').querySelector('.step-dot').textContent = '✓';
+    document.getElementById('step-confirmed').classList.add('done');
+    document.getElementById('step-confirmed').querySelector('.step-dot').textContent = '✓';
+  }
+
+  // ── PRIVATE PANELS ─────────────────────────────────────────
+  function showPanel(name) {
+    document.querySelectorAll('.private-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+      item.classList.toggle('active',
+        item.textContent.toLowerCase().includes(name === 'cuenta' ? 'cuenta'
+          : name === 'password' ? 'contraseña'
+          : name === 'docs' ? 'document'
+          : 'inscripción'));
+    });
+  }
+
+  // ── LOGOUT ─────────────────────────────────────────────────
+  function logout() {
+    currentUser = null;
+    inscrito = false;
+    showView('public');
+    // Reset nav
+    document.getElementById('nav-actions-guest').style.display = 'flex';
+    document.getElementById('nav-actions-user').style.display  = 'none';
+  }
+
+  // ── AGENDA TABS ────────────────────────────────────────────
+  function switchDay(btn, dayId) {
+    document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.agenda-list').forEach(l => l.style.display = 'none');
+    btn.classList.add('active');
+    document.getElementById(dayId).style.display = 'flex';
+    document.getElementById(dayId).style.flexDirection = 'column';
+    document.getElementById(dayId).style.gap = '2px';
+  }
+
+  // ── FAQ ────────────────────────────────────────────────────
+  function toggleFaq(btn) {
+    btn.parentElement.classList.toggle('open');
+  }
+
+  // ── SCROLL REVEAL ──────────────────────────────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
